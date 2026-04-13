@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>🏠 全方位驗屋整合系統｜營養師李亮頡｜勾稽清單＋缺失分級</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: #eef2f5;
+            padding: 2rem 1.5rem;
+            color: #1e2a3a;
+        }
+
+        .master-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* 專題介紹區塊 */
+        .hero {
+            background: linear-gradient(135deg, #1e3c2c 0%, #2a5a3a 100%);
+            color: white;
+            border-radius: 32px;
+            padding: 2rem 2rem 1.8rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+        }
+
+        .hero h1 {
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .hero h1 span {
+            background: #f5b042;
+            font-size: 0.9rem;
+            padding: 4px 12px;
+            border-radius: 40px;
+            color: #1e2a1f;
+            font-weight: 500;
+        }
+
+        .hero p {
+            margin-top: 1rem;
+            font-size: 1.05rem;
+            line-height: 1.5;
+            opacity: 0.92;
+            max-width: 85%;
+        }
+
+        .link-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-outline-light {
+            background: transparent;
+            border: 1.5px solid rgba(255, 255, 255, 0.7);
+            color: white;
+            padding: 0.5rem 1.2rem;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-outline-light:hover {
+            background: white;
+            color: #1e3c2c;
+            border-color: white;
+        }
+
+        /* 系統卡片通用 */
+        .systems-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .system-card {
+            background: white;
+            border-radius: 28px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .system-card:hover {
+            box-shadow: 0 20px 30px -12px rgba(0, 0, 0, 0.15);
+        }
+
+        .card-header {
+            background: #f8fafc;
+            padding: 1.2rem 2rem;
+            border-bottom: 2px solid #e2e8f0;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 12px;
+        }
+
+        .card-header h2 {
+            font-size: 1.7rem;
+            font-weight: 700;
+            background: none;
+            color: #0f2b1d;
+            padding: 0;
+            margin: 0;
+            letter-spacing: -0.2px;
+        }
+
+        .external-link {
+            background: #f1f5f9;
+            padding: 0.3rem 1rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            text-decoration: none;
+            color: #2c5a3a;
+            font-weight: 500;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .external-link:hover {
+            background: #e2e8f0;
+            color: #0f2b1d;
+        }
+
+        .card-content {
+            padding: 1.8rem 2rem 2rem;
+        }
+
+        .section-block {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 1.2rem 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #e9edf2;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        .section-block h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #1e4620;
+            border-left: 5px solid #2c7a47;
+            padding-left: 12px;
+        }
+
+        .section-block h4 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 0.8rem 0 0.5rem 0;
+            color: #2c5a3a;
+            background: #f3f9f0;
+            display: inline-block;
+            padding: 2px 12px;
+            border-radius: 20px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px 12px;
+            margin: 6px 0 12px 0;
+            border: 1px solid #cbd5e1;
+            border-radius: 14px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            transition: 0.2s;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #2c7a47;
+            box-shadow: 0 0 0 3px rgba(44, 122, 71, 0.2);
+        }
+
+        button {
+            background: #1e4620;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 6px;
+            margin-right: 12px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+        }
+
+        button:hover {
+            background: #2f6b3a;
+            transform: translateY(-1px);
+        }
+
+        .defect {
+            border: 1px solid #e2e8f0;
+            padding: 12px 16px;
+            margin-top: 12px;
+            border-radius: 18px;
+            background: #fefefe;
+        }
+
+        .high {
+            border-left: 8px solid #dc2626;
+            background: #fff5f5;
+        }
+
+        .mid {
+            border-left: 8px solid #f97316;
+            background: #fffaf0;
+        }
+
+        .low {
+            border-left: 8px solid #16a34a;
+            background: #f0fdf4;
+        }
+
+        .progress {
+            background: #e2e8f0;
+            border-radius: 60px;
+            overflow: hidden;
+            margin: 16px 0 10px;
+        }
+
+        .progress-bar {
+            height: 28px;
+            background: #2c7a47;
+            width: 0%;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8rem;
+            line-height: 28px;
+            transition: width 0.2s ease;
+        }
+
+        label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin: 8px 0;
+            cursor: pointer;
+            font-weight: 500;
+            line-height: 1.4;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-top: 2px;
+            flex-shrink: 0;
+            accent-color: #2c7a47;
+        }
+
+        .checklist-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .subgroup {
+            margin-bottom: 16px;
+            background: #fefef7;
+            padding: 8px 12px;
+            border-radius: 18px;
+        }
+
+        hr {
+            margin: 12px 0;
+        }
+
+        footer {
+            margin-top: 3rem;
+            text-align: center;
+            padding: 1.5rem 0.5rem;
+            border-top: 1px solid #cddfd0;
+            color: #3f5e48;
+            font-weight: 500;
+            font-size: 0.95rem;
+            background: #fefef7;
+            border-radius: 60px;
+        }
+
+        @media (max-width: 700px) {
+            body {
+                padding: 1rem;
+            }
+
+            .card-content {
+                padding: 1.2rem;
+            }
+
+            .hero p {
+                max-width: 100%;
+            }
+
+            .card-header h2 {
+                font-size: 1.4rem;
+            }
+        }
+
+        .badge-note {
+            background: #fff3e0;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 30px;
+            color: #a45100;
+        }
+    </style>
+</head>
+<body>
+<div class="master-container">
+    <!-- 專題介紹區域 -->
+    <div class="hero">
+        <h1>🏗️ 智能驗屋雙系統 ＋ 專業勾稽清單 <span>營養師跨界開發</span></h1>
+        <p>整合「缺失分級對抗策略」、「全室快速檢查」以及「未安裝廚具/衛浴版詳細勾稽清單」，由營養師李亮頡參考住宅品質檢驗規範、室內設計缺失資料庫開發。<br>
+        三種工具互補：分級談判、逐項驗收、深度勾稽，全面提升交屋品質。</p>
+        <div class="link-buttons">
+            <a href="#system1" class="btn-outline-light">📋 建商對抗版</a>
+            <a href="#system2" class="btn-outline-light">✅ 互動快速檢查</a>
+            <a href="#detailedChecklist" class="btn-outline-light">📑 專業勾稽清單</a>
+        </div>
+    </div>
+
+    <div class="systems-grid">
+        <!-- ========================= 系統一：建商對抗版（缺失分級） ========================= -->
+        <div id="system1" class="system-card">
+            <div class="card-header">
+                <h2>⚔️ 驗屋報告系統 · 建商對抗版</h2>
+                <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/s8762999999-design/1669f852b61cfc3ea1dcd5b9e9ce9c05/raw/fcbd2d30a1a0309d426e182353d3c368fc9e3299/gistfile1.txt"
+                   target="_blank" class="external-link">🔗 獨立頁面連結</a>
+            </div>
+            <div class="card-content">
+                <div class="section-block">
+                    <h3>📌 缺失登錄 (危險/重大/一般分級)</h3>
+                    <label>📍 缺失位置</label>
+                    <input type="text" id="location" placeholder="例：主臥浴室左牆、客廳落地窗...">
+                    <label>📝 問題描述</label>
+                    <textarea id="desc" rows="2" placeholder="詳細描述裂縫、滲水、不平整等..."></textarea>
+                    <label>⚠️ 嚴重程度</label>
+                    <select id="level">
+                        <option value="low">一般 (綠色)</option>
+                        <option value="mid">重大 (橘色)</option>
+                        <option value="high">危險 (紅色)</option>
+                    </select>
+                    <button onclick="addDefect()">+ 新增缺失</button>
+                </div>
+
+                <div class="section-block">
+                    <h3>📋 缺失清單</h3>
+                    <div id="defectList" style="max-height: 280px; overflow-y: auto;"></div>
+                </div>
+
+                <div class="section-block">
+                    <h3>🏁 交屋建議</h3>
+                    <p id="result" style="font-size: 1.2rem; font-weight: bold; margin: 0;">尚未判定</p>
+                </div>
+
+                <div class="section-block">
+                    <h3>📄 產出正式缺失報告</h3>
+                    <button onclick="exportReport()">📎 複製報告文字</button>
+                    <textarea id="output" rows="4" placeholder="報告將會顯示於此..." readonly
+                              style="background:#f9fbfd;"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================= 系統二：互動快速檢查版 ========================= -->
+        <div id="system2" class="system-card">
+            <div class="card-header">
+                <h2>✅ 全室互動檢查系統 · 快速逐項</h2>
+                <a href="https://htmlpreview.github.io/?https://gist.githubusercontent.com/s8762999999-design/7bc58bc4b3ea55fc1e59074ce8b94cbd/raw/bc654371b8699704c47dc82bf66b3b142ad92433/gistfile1.txt"
+                   target="_blank" class="external-link">🔗 獨立頁面連結</a>
+            </div>
+            <div class="card-content">
+                <div class="progress">
+                    <div id="progressBarSys2" class="progress-bar">0%</div>
+                </div>
+                <p style="font-size: 0.85rem; margin-bottom: 12px; color:#2d6a4f;">✅ 勾選已完成檢測項目，自動計算檢查完成率</p>
+
+                <div class="section-block"><h3>一、全屋快速巡視</h3>
+                    <label><input type="checkbox" class="check-sys2"> 牆面裂縫</label>
+                    <label><input type="checkbox" class="check-sys2"> 天花板滲水</label>
+                    <label><input type="checkbox" class="check-sys2"> 地板高低差</label>
+                    <label><input type="checkbox" class="check-sys2"> 施工瑕疵</label>
+                    <label><input type="checkbox" class="check-sys2"> 門窗變形</label>
+                </div>
+                <div class="section-block"><h3>二、天花板</h3>
+                    <label><input type="checkbox" class="check-sys2"> 裂縫</label>
+                    <label><input type="checkbox" class="check-sys2"> 水漬</label>
+                    <label><input type="checkbox" class="check-sys2"> 滲水</label>
+                    <label><input type="checkbox" class="check-sys2"> 管線潮濕</label>
+                </div>
+                <div class="section-block"><h3>三、牆面</h3>
+                    <label><input type="checkbox" class="check-sys2"> 裂縫</label>
+                    <label><input type="checkbox" class="check-sys2"> 平整</label>
+                    <label><input type="checkbox" class="check-sys2"> 油漆正常</label>
+                    <label><input type="checkbox" class="check-sys2"> 磁磚空鼓</label>
+                </div>
+                <div class="section-block"><h3>四、地板</h3>
+                    <label><input type="checkbox" class="check-sys2"> 水平</label>
+                    <label><input type="checkbox" class="check-sys2"> 無異音</label>
+                    <label><input type="checkbox" class="check-sys2"> 排水坡度</label>
+                </div>
+                <div class="section-block"><h3>五、門窗五金</h3>
+                    <label><input type="checkbox" class="check-sys2"> 門正常</label>
+                    <label><input type="checkbox" class="check-sys2"> 門鎖正常</label>
+                    <label><input type="checkbox" class="check-sys2"> 窗戶密合</label>
+                    <label><input type="checkbox" class="check-sys2"> 無漏風</label>
+                </div>
+                <div class="section-block"><h3>六、電路</h3>
+                    <label><input type="checkbox" class="check-sys2"> 插座有電</label>
+                    <label><input type="checkbox" class="check-sys2"> 接地正常</label>
+                    <label><input type="checkbox" class="check-sys2"> 開關正常</label>
+                    <label><input type="checkbox" class="check-sys2"> 無跳電</label>
+                </div>
+                <div class="section-block"><h3>七、水路（最後測）</h3>
+                    <label><input type="checkbox" class="check-sys2"> 水壓正常</label>
+                    <label><input type="checkbox" class="check-sys2"> 排水順暢</label>
+                    <label><input type="checkbox" class="check-sys2"> 無回流</label>
+                    <label><input type="checkbox" class="check-sys2"> 防水測試</label>
+                </div>
+                <div class="section-block">
+                    <h3>📝 缺失紀錄</h3>
+                    <textarea id="defectRecordSys2" rows="3" placeholder="輸入額外缺失..."></textarea>
+                    <button onclick="copyDefectRecord()">📋 複製紀錄</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================= 系統三：專業驗屋勾稽清單（未安裝廚具/衛浴版，依驗屋順序） ========================= -->
+        <div id="detailedChecklist" class="system-card">
+            <div class="card-header">
+                <h2>📋 專業驗屋勾稽清單 <span style="font-size:0.9rem;">未安裝廚具／衛浴版｜依驗屋順序</span></h2>
+                <div class="badge-note">⚡ 共約95項檢查點，支援進度與缺失產出</div>
+            </div>
+            <div class="card-content">
+                <!-- 進度條區塊 -->
+                <div class="progress">
+                    <div id="progressBarDetail" class="progress-bar">0%</div>
+                </div>
+                <div style="display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 16px;">
+                    <button id="copyMissingBtnDetail">📋 複製未勾選項目 (缺失清單)</button>
+                    <button id="copyAllStatusBtn">📄 複製完整勾稽狀態</button>
+                </div>
+
+                <!-- 動態載入勾稽清單的容器 -->
+                <div id="detailChecklistContainer"></div>
+
+                <div class="section-block">
+                    <h3>📝 額外缺失備註 (手動記錄)</h3>
+                    <textarea id="extraDefectDetail" rows="3" placeholder="補充未列於清單的缺失或照片編號..."></textarea>
+                    <button id="copyExtraOnlyBtn">📎 複製額外備註</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        🌾 營養師 李亮頡 參考研究開發 2026/04/13 — 整合缺失分級 × 快速巡檢 × 詳細勾稽清單，打造完整驗屋解決方案
+    </footer>
+</div>
+
+<script>
+    // ---------- 系統一：建商對抗版邏輯 ----------
+    let defectsArray = [];
+
+    function levelText(level) {
+        if (level === "high") return "危險 🔴";
+        if (level === "mid") return "重大 🟠";
+        return "一般 🟢";
+    }
+
+    function renderDefects() {
+        const container = document.getElementById("defectList");
+        if (!container) return;
+        container.innerHTML = "";
+        if (defectsArray.length === 0) {
+            container.innerHTML = '<div style="padding: 16px; text-align:center; color:#6c757d;">✨ 尚無缺失，點擊上方新增缺失</div>';
+            return;
+        }
+        defectsArray.forEach(d => {
+            const div = document.createElement("div");
+            div.className = `defect ${d.level}`;
+            div.innerHTML = `
+                <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap:wrap;">
+                    <b>#${String(d.id).padStart(2, '0')}</b>
+                    <span style="font-size:0.75rem; background:#eef2f0; padding:2px 8px; border-radius:40px;">${levelText(d.level)}</span>
+                </div>
+                <div style="margin-top: 6px;"><strong>📍 位置：</strong> ${escapeHtml(d.loc)}</div>
+                <div><strong>🔍 問題：</strong> ${escapeHtml(d.desc)}</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function escapeHtml(str) {
+        if (!str) return '';
+        return str.replace(/[&<>]/g, function (m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function evaluateConclusion() {
+        const hasHigh = defectsArray.some(d => d.level === "high");
+        const hasMid = defectsArray.some(d => d.level === "mid");
+        const resultEl = document.getElementById("result");
+        if (!resultEl) return;
+        if (hasHigh) {
+            resultEl.innerHTML = "❌ 不建議交屋（存在危險缺失）—— 結構/安全疑慮，強烈要求修繕";
+            resultEl.style.color = "#b91c1c";
+        } else if (hasMid) {
+            resultEl.innerHTML = "⚠️ 需改善後複驗 —— 重大缺失影響機能，修繕後再複驗";
+            resultEl.style.color = "#c2410c";
+        } else {
+            resultEl.innerHTML = "✅ 可交屋 —— 無危險或重大缺失，一般缺失可協商修繕";
+            resultEl.style.color = "#15803d";
+        }
+    }
+
+    function addDefect() {
+        const locationInput = document.getElementById("location");
+        const descInput = document.getElementById("desc");
+        const levelSelect = document.getElementById("level");
+        let loc = locationInput?.value.trim() || "";
+        let desc = descInput?.value.trim() || "";
+        let level = levelSelect?.value || "low";
+        if (!loc || !desc) {
+            alert("請完整填寫「缺失位置」與「問題描述」！");
+            return;
+        }
+        const newId = defectsArray.length + 1;
+        defectsArray.push({id: newId, loc: loc, desc: desc, level: level});
+        renderDefects();
+        evaluateConclusion();
+        locationInput.value = "";
+        descInput.value = "";
+        levelSelect.value = "low";
+        locationInput.focus();
+    }
+
+    function exportReport() {
+        if (defectsArray.length === 0) {
+            document.getElementById("output").value = "✅ 目前無缺失紀錄，驗屋狀況良好。";
+            return;
+        }
+        let report = "🏠 驗屋缺失報告 (建商對抗版)\n📅 " + new Date().toLocaleDateString('zh-TW') + "\n缺失總數：" + defectsArray.length + " 項\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n";
+        defectsArray.forEach(d => {
+            report += `【${String(d.id).padStart(2, '0')}】 ${levelText(d.level)}\n  位置：${d.loc}\n  問題：${d.desc}\n──────────────────────────────\n`;
+        });
+        const outputArea = document.getElementById("output");
+        if (outputArea) {
+            outputArea.value = report;
+            outputArea.select();
+            document.execCommand("copy");
+            alert("✅ 報告已複製到剪貼簿");
+        }
+    }
+
+    // 系統二：快速檢查進度與複製
+    function updateSys2Progress() {
+        const checks = document.querySelectorAll('.check-sys2');
+        const total = checks.length;
+        if (total === 0) return;
+        const checked = document.querySelectorAll('.check-sys2:checked').length;
+        const percent = Math.round((checked / total) * 100);
+        const bar = document.getElementById('progressBarSys2');
+        if (bar) {
+            bar.style.width = percent + '%';
+            bar.innerText = percent + '%';
+        }
+    }
+
+    function copyDefectRecord() {
+        const textarea = document.getElementById("defectRecordSys2");
+        if (textarea) {
+            textarea.select();
+            document.execCommand("copy");
+            alert("已複製缺失紀錄");
+        }
+    }
+
+    // ---------- 系統三：詳細勾稽清單資料結構 (完全依照提供內容) ----------
+    const detailedChecklistData = [
+        { section: "一、全屋快速巡視（10–15分鐘）", items: ["牆面是否有明顯裂縫（含樑柱交接）", "天花板是否有水漬／滲漏痕跡", "地板是否有明顯高低差", "是否有大面積施工瑕疵", "門窗是否有明顯歪斜或變形"] },
+        { section: "二、分區檢查（客廳 → 臥室 → 廚房 → 陽台 → 浴室）", subSections: [
+            { title: "【1】天花板（先看上）", items: ["天花板是否有裂縫", "是否有水漬或黃斑", "是否有滲水痕跡", "管線出口是否乾燥"] },
+            { title: "【2】牆面", items: ["牆面是否有裂縫（含樑柱交接）", "裂縫是否超過0.3mm", "牆面是否平整（無明顯凹凸）", "油漆是否均勻（無起泡、龜裂、脫落）", "磁磚是否空鼓（敲擊測試）", "磁磚是否對縫整齊"] },
+            { title: "【3】地板", items: ["地板是否水平（雷射／水平尺）", "是否有空心或異音", "地面是否平整", "排水坡度是否合理（用水或彈珠測）"] },
+            { title: "【4】門窗／五金", items: ["門片開關順暢", "門框是否歪斜", "門縫是否均勻", "門鎖是否正常", "窗戶開關是否順暢", "窗戶密合度是否良好", "窗框是否變形", "五金是否牢固"] },
+            { title: "【5】電路系統（乾區先測）", items: ["每個插座是否有電（小夜燈／測試器）", "插座接地是否正常", "插座是否固定牢固", "所有開關是否正常", "燈具是否正常（無閃爍）"] },
+            { title: "【6】廚房（未安裝設備重點）", items: ["冷熱水出水口位置正確", "排水孔位置正確", "排水孔高度是否合理", "排水是否順暢（倒水測試）", "管線接頭是否滲水", "電源插座位置是否符合設備需求", "排油煙機孔位是否正確"] },
+            { title: "【7】陽台", items: ["排水孔位置正確", "排水是否順暢", "地面坡度是否正確（無積水）", "洗衣機排水孔位置是否正確", "水龍頭是否正常"] }
+        ] },
+        { section: "三、水路系統（集中最後測試）", items: ["所有出水口是否正常（含預留）", "同時開水水壓是否穩定", "冷熱水方向是否正確", "各排水孔排水是否順暢", "排水是否有回流", "管線接頭是否滲漏"], note: "⚠️ 全部空間檢查完再做" },
+        { section: "四、浴室（未安裝衛浴設備重點）", subSections: [
+            { title: "【排水與坡度】", items: ["地板排水坡度是否正確（潑水測試）", "是否有積水現象", "排水速度是否正常"] },
+            { title: "【防水測試】", items: ["浴室蓄水測試（30分鐘以上）", "門檻外是否滲水", "牆角是否滲水"] },
+            { title: "【管線預留】", items: ["馬桶排水孔位置是否正確", "馬桶排水孔高度是否合理", "臉盆冷熱水孔位置是否正確", "排水孔位置是否正確", "管線是否有滲漏"] },
+            { title: "【其他】", items: ["通風是否正常（窗或排風）", "牆面磁磚是否空鼓", "地面防滑性是否正常"] }
+        ] },
+        { section: "五、配電箱（最後檢查）", items: ["配電箱標示是否清楚", "各回路是否正常", "斷路器功能是否正常", "漏電斷路器測試是否正常", "是否有異常跳電"] }
+    ];
+
+    function buildDetailedChecklist() {
+        const container = document.getElementById("detailChecklistContainer");
+        if (!container) return;
+        container.innerHTML = "";
+        for (let group of detailedChecklistData) {
+            if (group.subSections) {
+                // 有子群組
+                const wrapper = document.createElement("div");
+                wrapper.className = "section-block";
+                const mainTitle = document.createElement("h3");
+                mainTitle.innerText = group.section;
+                wrapper.appendChild(mainTitle);
+                group.subSections.forEach(sub => {
+                    const subDiv = document.createElement("div");
+                    subDiv.className = "subgroup";
+                    const subTitle = document.createElement("h4");
+                    subTitle.innerText = sub.title;
+                    subDiv.appendChild(subTitle);
+                    sub.items.forEach(item => {
+                        const label = document.createElement("label");
+                        const cb = document.createElement("input");
+                        cb.type = "checkbox";
+                        cb.className = "check-detailed";
+                        label.appendChild(cb);
+                        label.appendChild(document.createTextNode(" " + item));
+                        subDiv.appendChild(label);
+                    });
+                    wrapper.appendChild(subDiv);
+                });
+                container.appendChild(wrapper);
+            } else {
+                const wrapper = document.createElement("div");
+                wrapper.className = "section-block";
+                const titleEl = document.createElement("h3");
+                titleEl.innerText = group.section;
+                wrapper.appendChild(titleEl);
+                if (group.note) {
+                    const noteSpan = document.createElement("div");
+                    noteSpan.style.fontSize = "0.8rem";
+                    noteSpan.style.color = "#b45309";
+                    noteSpan.innerText = group.note;
+                    wrapper.appendChild(noteSpan);
+                }
+                group.items.forEach(item => {
+                    const label = document.createElement("label");
+                    const cb = document.createElement("input");
+                    cb.type = "checkbox";
+                    cb.className = "check-detailed";
+                    label.appendChild(cb);
+                    label.appendChild(document.createTextNode(" " + item));
+                    wrapper.appendChild(label);
+                });
+                container.appendChild(wrapper);
+            }
+        }
+        // 綁定事件更新進度
+        attachDetailEvents();
+        updateDetailProgress();
+    }
+
+    function attachDetailEvents() {
+        const checkboxes = document.querySelectorAll('.check-detailed');
+        checkboxes.forEach(cb => {
+            cb.removeEventListener('change', updateDetailProgress);
+            cb.addEventListener('change', updateDetailProgress);
+        });
+    }
+
+    function updateDetailProgress() {
+        const all = document.querySelectorAll('.check-detailed');
+        const total = all.length;
+        if (total === 0) return;
+        const checked = document.querySelectorAll('.check-detailed:checked').length;
+        const percent = Math.round((checked / total) * 100);
+        const bar = document.getElementById('progressBarDetail');
+        if (bar) {
+            bar.style.width = percent + '%';
+            bar.innerText = percent + '%';
+        }
+    }
+
+    // 複製未勾選項目 (缺失清單)
+    function copyMissingDetailed() {
+        const allItems = [];
+        const containers = document.querySelectorAll('#detailChecklistContainer .section-block');
+        containers.forEach(block => {
+            let currentSection = "";
+            const heading = block.querySelector('h3');
+            if (heading) currentSection = heading.innerText;
+            const labels = block.querySelectorAll('label');
+            labels.forEach(label => {
+                const cb = label.querySelector('.check-detailed');
+                const text = label.innerText.trim();
+                if (cb && !cb.checked && text) {
+                    allItems.push(`【${currentSection}】 ${text}`);
+                }
+            });
+        });
+        const extra = document.getElementById("extraDefectDetail")?.value.trim();
+        let report = "🔍 驗屋缺失清單（未勾選項目）\n";
+        report += `產生時間：${new Date().toLocaleString('zh-TW')}\n`;
+        report += `缺失總數：${allItems.length}\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        if (allItems.length === 0) report += "✅ 無未勾選項目，所有檢查點皆合格。\n";
+        else allItems.forEach((item, idx) => { report += `${idx+1}. ${item}\n`; });
+        if (extra) report += `\n📌 額外備註：\n${extra}\n`;
+        copyToClipboard(report);
+        alert("未勾選缺失清單已複製！");
+    }
+
+    function copyFullStatus() {
+        let full = "📋 驗屋勾稽完整狀態\n";
+        const allLabels = document.querySelectorAll('#detailChecklistContainer label');
+        allLabels.forEach(label => {
+            const cb = label.querySelector('.check-detailed');
+            const text = label.innerText.trim();
+            const status = cb && cb.checked ? "✓ 合格" : "✗ 缺失";
+            full += `${status} ｜ ${text}\n`;
+        });
+        const extra = document.getElementById("extraDefectDetail")?.value;
+        if (extra) full += `\n額外備註：\n${extra}`;
+        copyToClipboard(full);
+        alert("完整勾稽狀態已複製");
+    }
+
+    function copyExtraOnly() {
+        const extra = document.getElementById("extraDefectDetail")?.value;
+        if (extra) copyToClipboard("📝 額外缺失備註：\n" + extra);
+        else copyToClipboard("無額外備註");
+        alert("已複製額外備註");
+    }
+
+    function copyToClipboard(text) {
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+    }
+
+    // 全域初始化
+    document.addEventListener('DOMContentLoaded', function () {
+        renderDefects();
+        evaluateConclusion();
+        // 系統二事件
+        const sys2Checks = document.querySelectorAll('.check-sys2');
+        sys2Checks.forEach(cb => cb.addEventListener('change', updateSys2Progress));
+        updateSys2Progress();
+        // 系統三建構
+        buildDetailedChecklist();
+
+        // 綁定按鈕
+        const copyMissingBtn = document.getElementById("copyMissingBtnDetail");
+        if (copyMissingBtn) copyMissingBtn.addEventListener('click', copyMissingDetailed);
+        const copyAllBtn = document.getElementById("copyAllStatusBtn");
+        if (copyAllBtn) copyAllBtn.addEventListener('click', copyFullStatus);
+        const copyExtraBtn = document.getElementById("copyExtraOnlyBtn");
+        if (copyExtraBtn) copyExtraBtn.addEventListener('click', copyExtraOnly);
+    });
+
+    window.addDefect = addDefect;
+    window.exportReport = exportReport;
+    window.copyDefectRecord = copyDefectRecord;
+</script>
+</body>
+</html>
